@@ -1,0 +1,16 @@
+.converter {
+  margin: 80px auto 0;
+  /* width: 600px; */
+}
+
+.converter__form {
+  margin-top: 20px;
+}
+
+.converter__currency {
+  width: 100%;
+}
+
+.converter__input {
+  width: 30%;
+}

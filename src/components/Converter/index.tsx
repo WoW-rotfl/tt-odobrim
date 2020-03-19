@@ -1,3 +1,6 @@
 import Converter from './Converter'
+import ConverterContainer from './ConverterContainer'
 
-export default Converter
+export default ConverterContainer
+
+export { Converter }

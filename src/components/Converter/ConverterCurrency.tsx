@@ -1,12 +1,14 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 
 type Props = {
+  testSumId: string;
+  testCncyId: string;
   sum: string;
   onChangeSum: (e: React.ChangeEvent<HTMLInputElement>) => void;
   currency: string;
-  onChangeCurrency: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeCurrency: (e: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
 };
 
 const getCurrencies = (): string[] => ([
@@ -17,24 +19,24 @@ const getCurrencies = (): string[] => ([
   'GBP'
 ]);
 
-const ConverterCurrency = ({ sum, onChangeSum, currency, onChangeCurrency }: Props) => (
+const ConverterCurrency = ({ testSumId, sum, onChangeSum, currency, onChangeCurrency }: Props) => (
   <div className="converter__currency">
     <TextField
       classes={{ root: 'converter__input' }}
       type="number"
       onChange={onChangeSum}
       value={sum}
-      inputProps={{ min: 0 }}
+      inputProps={{ min: 0, 'data-testid': testSumId }}
     />
-    <TextField
-      select
+    <Select
+      native
       value={currency}
       onChange={onChangeCurrency}
     >
       {getCurrencies().map(cncy => (
-        <MenuItem key={cncy} value={cncy}>{cncy}</MenuItem>
+        <option key={cncy} value={cncy}>{cncy}</option>
       ))}
-    </TextField>
+    </Select>
   </div>
 );
 

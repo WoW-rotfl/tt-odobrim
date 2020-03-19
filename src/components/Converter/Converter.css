@@ -3,6 +3,10 @@
   /* width: 600px; */
 }
 
+.converter__loader {
+  margin-top: 80px;
+}
+
 .converter__form {
   margin-top: 20px;
 }

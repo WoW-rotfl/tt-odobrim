@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useEffect } from 'react'
+import { useReducer, useCallback } from 'react'
 import { useExchange, CalcExchangeSum } from '../../ExchangeContext'
 
 // import type { CalcExchangeSum } from '../../ExchangeContext';
@@ -9,7 +9,8 @@ type Action =
   | { type: 'CHANGE_FROM_SUM', payload: string }
   | { type: 'CHANGE_TO_CURRENCY', payload: string }
   | { type: 'CHANGE_TO_SUM', payload: string }
-  | { type: 'CONVERTER_REAL_TIME_REFRESH_TO_SUM' }
+  // for usage uncomment useFffect :76-79
+  | { type: 'CONVERTER_REAL_TIME_REFRESH_TO_SUM' } 
 
 const initialState = {
   fromCurrency: 'RUB',

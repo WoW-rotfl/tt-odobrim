@@ -22,9 +22,7 @@ test('should handle login', () => {
 
 test('should handle logout', () => {
   const { getByText } = setup()
-  const button = getByText(/Log in/) as HTMLButtonElement
-  fireEvent.click(button)
-  expect(button.innerHTML).toBe('Log out')
+  const button = getByText(/Log out/) as HTMLButtonElement
   fireEvent.click(button)
   expect(button.innerHTML).toBe('Log in')
 })

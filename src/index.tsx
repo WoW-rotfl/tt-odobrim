@@ -2,16 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import ErrorBoundary from './ErrorBoundary'
-import store from './store'
-import { AuthProvider } from './contexts/AuthContext'
 import * as serviceWorker from './serviceWorker'
 import './index.css'
 
 ReactDOM.render(
   <ErrorBoundary>
-    <AuthProvider store={store}>
-      <App />
-    </AuthProvider>
+    <App />
   </ErrorBoundary>,
   document.getElementById('root')
 )

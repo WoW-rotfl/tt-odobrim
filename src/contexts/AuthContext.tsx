@@ -18,10 +18,9 @@ const { Provider, Consumer } = AuthContext;
 
 function AuthProvider({ children, store }: Props) {
 
-  const getInitState = useCallback(() => {
-    const auth = store.get('isAuth') !== 'true' && false
-    return auth && initialState
-  }, [store])
+  const getInitState = useCallback(() => (
+    store.get('isAuth') === 'true' || initialState
+  ), [store])
 
   const [isAuth, setAuth] = useState<State>(getInitState())
 

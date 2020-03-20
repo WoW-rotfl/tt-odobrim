@@ -8,7 +8,7 @@ if (!store) {
 const controller: IStore<string, string | null> = {
   get: (key) => store.getItem(key),
   set: (key, value) => {
-    if (value) store.setItem(key, value)
+    if (value || value === '') store.setItem(key, value)
   }
 }
 

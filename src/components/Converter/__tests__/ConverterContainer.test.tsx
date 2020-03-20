@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import { ExchangeProvider } from '../../../ExchangeContext'
+import { ExchangeProvider } from '../../../contexts/ExchangeContext'
 import ConverterContainer from '../ConverterContainer'
 
 

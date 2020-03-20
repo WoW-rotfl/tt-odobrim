@@ -5,7 +5,7 @@ import React, {
   useState,
   useContext,
 } from 'react'
-import rapidapi from './api/rapidapi';
+import rapidapi from '../api/rapidapi'
 
 export type CalcExchangeSum = (fromSum: string, fromCncy: string, toCncy: string) => string
 type ExchangeRates = { [currency: string]: number }
@@ -24,6 +24,7 @@ function randomInteger(min: number, max: number): number {
   return Math.floor(rand);
 }
 
+// Based on xe.com 1 year currency chart
 function randomRates() {
   return {
     RUB: Number(`0.0${randomInteger(1328, 1639)}`),
@@ -31,7 +32,6 @@ function randomRates() {
     EUR: Number(`1.${randomInteger(10000, 14730)}`),
     JPY: Number(`0.00${randomInteger(891, 980)}`),
     GBP: Number(`1.${randomInteger(20224, 34751)}`)
-    
   }
 }
 
@@ -41,19 +41,25 @@ function ExchangeProvider({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    let didCancel = false
     async function fetchRates() {
       const newRates = await rapidapi()
-      setRates(newRates)
-      setLoading(false)
+      if (!didCancel) {
+        setRates(newRates)
+        setLoading(false)
+      }
     }
 
     fetchRates()
+    return () => {
+      didCancel = true
+    }
   }, [])
 
 
   // rapid api has request limits and low update frequency
   useEffect(() => {
-
+    
     function hasRatesChanged(newRates: ExchangeRates): boolean {
       return JSON.stringify(rates) !== JSON.stringify(newRates)
     }
@@ -65,7 +71,6 @@ function ExchangeProvider({ children }: Props) {
         setRates(newRates)
       }
     }, exchangeUpdInterval)
-
     return () => {
       clearInterval(intervalId)
     }
@@ -78,7 +83,6 @@ function ExchangeProvider({ children }: Props) {
 
 
   const calcExchangeSum: CalcExchangeSum = useCallback((fromSum, fromCncy, toCncy) => {
-    console.log(getRate(toCncy));
     const result = Number(fromSum) * getRate(fromCncy) / getRate(toCncy)
     if (result === 0) return ''
 
@@ -99,7 +103,5 @@ function useExchange() {
   }
   return context
 }
-
-// export default ExchangeContext
 
 export { ExchangeProvider, Consumer as ExchangeConsumer, useExchange }

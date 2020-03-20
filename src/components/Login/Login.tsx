@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
+import './Login.css'
 
 function Login() {
   const { isAuth, login, logout } = useAuth()
@@ -13,9 +14,9 @@ function Login() {
   }, [logout])
 
   return !isAuth ? (
-    <button type="button" onClick={handleLogin}>Log in</button>
+    <button className="login" type="button" onClick={handleLogin}>Log in</button>
   ) : (
-    <button type="button" onClick={handleLogout}>Log out</button>
+    <button className="login" type="button" onClick={handleLogout}>Log out</button>
   )
 }
 

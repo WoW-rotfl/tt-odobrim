@@ -8,7 +8,7 @@ type Props = {
   sum: string;
   onChangeSum: (e: React.ChangeEvent<HTMLInputElement>) => void;
   currency: string;
-  onChangeCurrency: (e: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
+  onChangeCurrency: MaterialSelect
 };
 
 const getCurrencies = (): string[] => ([

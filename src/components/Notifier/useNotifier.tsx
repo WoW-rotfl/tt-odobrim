@@ -76,15 +76,15 @@ function useNotifier(): [State, Dispatchers] {
     dispatch
   ] = useReducer(reducer, initialState)
 
-  const setChangedToSum = useCallback((sum: string) => {
+  const setChangedToSum = useCallback((sum) => {
     dispatch({ type: 'CHANGE_CHANGED_TO_SUM', payload: sum })
   }, [dispatch])
 
-  const setConditionOperator = useCallback((operator: ConditionOperator) => {
+  const setConditionOperator = useCallback((operator) => {
     dispatch({ type: 'CHANGE_CONDITION_OPERATOR', payload: operator })
   }, [dispatch])
 
-  const addNotification = useCallback((notification: Notification) => {
+  const addNotification = useCallback((notification) => {
     dispatch({ type: 'ADD_NOTIFICATION', payload: notification })
   }, [dispatch])
 
@@ -93,8 +93,17 @@ function useNotifier(): [State, Dispatchers] {
   }, [dispatch])
 
   return [
-    { changedToSum, conditionOperator, notifications: [...notifications] },
-    { setChangedToSum, setConditionOperator, addNotification, removeNotification }
+    {
+      changedToSum,
+      conditionOperator,
+      notifications: [...notifications]
+    },
+    {
+      setChangedToSum,
+      setConditionOperator,
+      addNotification,
+      removeNotification
+    }
   ]
 }
 

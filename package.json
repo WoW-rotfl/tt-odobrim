@@ -16,14 +16,15 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "unique-string": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cs": "node_modules/.bin/component-structure -p src/components -s index.tsx .tsx .css __tests__/.test.ts --"
+    "cs": "node_modules/.bin/component-structure -p src/components -s index.tsx .tsx .css __tests__/.test.tsx --"
   },
   "eslintConfig": {
     "extends": "react-app"

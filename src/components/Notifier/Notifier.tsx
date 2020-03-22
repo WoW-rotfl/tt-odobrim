@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import NotifierForm from './NotifierForm'
+import NotifierList from './NotifierList'
 import useNotifier, { ConditionOperator } from './useNotifier';
 
 type Props ={
@@ -9,15 +10,29 @@ type Props ={
     toCurrency: string;
     toSum: string;
   };
+  conversiionId?: string;
 }
 
-function Notifier({ getConvertionData }: Props) {
-  const { toSum } = getConvertionData()
+function Notifier({ getConvertionData, conversiionId }: Props) {
+  const {
+    fromSum,
+    fromCurrency,
+    toSum,
+    toCurrency,
+  } = getConvertionData()
 
   const [
-    { changedToSum, conditionOperator },
-    { setChangedToSum, setConditionOperator }
-  ] = useNotifier();
+    {
+      changedToSum,
+      conditionOperator,
+      notifications,
+    },
+    {
+      setChangedToSum,
+      setConditionOperator,
+      addNotification,
+    }
+  ] = useNotifier()
 
   const handleChangeToSum = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setChangedToSum(e.target.value)
@@ -27,6 +42,24 @@ function Notifier({ getConvertionData }: Props) {
     setConditionOperator(e.target.value as ConditionOperator)
   }, [setConditionOperator])
 
+  const handleAddNotification = useCallback(() => {
+    addNotification({
+      changedToSum,
+      conditionOperator,
+      fromSum,
+      fromCurrency,
+      toSum,
+      toCurrency,
+    })
+  }, [
+    addNotification,
+    changedToSum,
+    conditionOperator,
+    fromSum,
+    fromCurrency,
+    toSum,
+    toCurrency
+  ])
 
   return (
     <div className="notifier">
@@ -36,7 +69,11 @@ function Notifier({ getConvertionData }: Props) {
         onChangeAmount={handleChangeToSum}
         onChangeConditionOperator={handleChangeCndnOp}
         currentConversion={toSum}
+        onClickNotifyBtn={handleAddNotification}
       />
+      <div className="notifier__notifications">
+        <NotifierList notifications={notifications} />
+      </div>
     </div>
   )
 }

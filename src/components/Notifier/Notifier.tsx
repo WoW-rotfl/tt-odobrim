@@ -1,7 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import NotifierForm from './NotifierForm'
 import NotifierList from './NotifierList'
-import useNotifier, { ConditionOperator } from './useNotifier';
+import storeapi, { ConditionOperator } from '../../api/storeapi'
+import { removeItemById } from '../../utils';
+
+import './Notifier.css'
 
 type Props ={
   getConvertionData: () => {
@@ -20,30 +23,17 @@ function Notifier({ getConvertionData, conversiionId }: Props) {
     toSum,
     toCurrency,
   } = getConvertionData()
-
   const [
-    {
-      changedToSum,
-      conditionOperator,
-      notifications,
-    },
-    {
-      setChangedToSum,
-      setConditionOperator,
-      addNotification,
-    }
-  ] = useNotifier()
+    notifications,
+    setNotifications
+  ] = useState(storeapi.getNotifications())
 
-  const handleChangeToSum = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setChangedToSum(e.target.value)
-  }, [setChangedToSum])
+  const handleAddNotification = useCallback((
+    changedToSum: string,
+    conditionOperator: ConditionOperator
+  ) => {
 
-  const handleChangeCndnOp: MaterialSelect = useCallback((e) => {
-    setConditionOperator(e.target.value as ConditionOperator)
-  }, [setConditionOperator])
-
-  const handleAddNotification = useCallback(() => {
-    addNotification({
+    const newNotification = storeapi.createNotification({
       changedToSum,
       conditionOperator,
       fromSum,
@@ -51,28 +41,47 @@ function Notifier({ getConvertionData, conversiionId }: Props) {
       toSum,
       toCurrency,
     })
+
+    setNotifications({
+      [newNotification.id]: newNotification,
+      ...notifications
+    })
+
   }, [
-    addNotification,
-    changedToSum,
-    conditionOperator,
     fromSum,
     fromCurrency,
     toSum,
-    toCurrency
+    toCurrency,
+    notifications
   ])
+
+  const handleRemoveNotification = useCallback((id: string) => {
+    storeapi.removeNotification(id)
+    setNotifications({ ...removeItemById(id, notifications) })
+  }, [notifications])
+
+  const handleCompleteNotification = useCallback((
+    id: string,
+    completeSum: string
+  ) => {
+    
+    const notification = storeapi.completeNotification(id, completeSum)
+    setNotifications({ ...notifications, [id]: notification })
+
+  }, [notifications])
 
   return (
     <div className="notifier">
       <NotifierForm
-        changedAmount={changedToSum}
-        conditionOperator={conditionOperator}
-        onChangeAmount={handleChangeToSum}
-        onChangeConditionOperator={handleChangeCndnOp}
         currentConversion={toSum}
         onClickNotifyBtn={handleAddNotification}
       />
       <div className="notifier__notifications">
-        <NotifierList notifications={notifications} />
+        <NotifierList
+          notifications={Object.values(notifications)}
+          onClickRemoveNotification={handleRemoveNotification}
+          onCompleteNotification={handleCompleteNotification}
+        />
       </div>
     </div>
   )

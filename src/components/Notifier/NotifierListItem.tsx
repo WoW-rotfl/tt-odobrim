@@ -7,10 +7,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import CheckIcon from '@material-ui/icons/Check'
 
-import useNotifier from './useNotifier'
 import { Notification } from '../../api/storeapi'
 import { calcNotifySum, exprOperator } from './utils'
 import { useExchange } from '../../contexts/ExchangeContext'
+
+type Dispatchers = {
+  onClickRemoveNotification: (id: string) => void,
+}
 
 
 function NotifierListItem({
@@ -18,15 +21,15 @@ function NotifierListItem({
   changedToSum,
   conditionOperator,
   completed,
+  completeSum,
   fromSum,
   fromCurrency,
   toSum,
   toCurrency,
   startTime,
   endTime,
-}: Notification) {
-  const { calcExchangeSum } = useExchange()
-  const [, { completeNotification, removeNotification }] = useNotifier()
+  onClickRemoveNotification,
+}: Notification & Dispatchers) {
 
 
   const formulaLabel = useCallback(() => {
@@ -36,7 +39,10 @@ function NotifierListItem({
     const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
     const calcFormula = `${changedToSum}(changed to)${exprOperator(conditionOperator)}${toSum} = (${notifySum}`
     const cndnOperatotStr = conditionOperator === 'gt' ? '>' : '<'
-    return `${fromValue} -> ${toValue} => ${calcFormula} ${cndnOperatotStr} ${toSum})`
+    const completeSumStr = completed ? ` => ${completeSum}(new conversion)` : ''
+
+    return `${fromValue} -> ${toValue} => ${calcFormula} ${cndnOperatotStr} ${toSum})${completeSumStr}`
+
   }, [
     fromSum,
     fromCurrency,
@@ -44,6 +50,8 @@ function NotifierListItem({
     toCurrency,
     changedToSum,
     conditionOperator,
+    completed,
+    completeSum
   ])
 
   const timeLabel = useCallback(() => {
@@ -52,32 +60,33 @@ function NotifierListItem({
       : `Start: ${startTime} -> End: ${endTime}`
   }, [startTime, endTime])
 
-  const hasComplete = useCallback(() => {
-    const newConversionResult = Number(calcExchangeSum(fromSum, fromCurrency, toCurrency))
-    const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
-    return conditionOperator === 'gt'
-    ? newConversionResult > notifySum
-    : newConversionResult < notifySum
+  // const hasComplete = useCallback(() => {
+  //   const newConversionResult = Number(calcExchangeSum(fromSum, fromCurrency, toCurrency))
+  //   const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
+  //   console.log(newConversionResult, notifySum);
+  //   return conditionOperator === 'gt'
+  //   ? newConversionResult > notifySum
+  //   : newConversionResult < notifySum
 
-  }, [
-    calcExchangeSum,
-    fromSum,
-    fromCurrency,
-    toSum,
-    toCurrency,
-    changedToSum,
-    conditionOperator,
-  ])
+  // }, [
+  //   calcExchangeSum,
+  //   fromSum,
+  //   fromCurrency,
+  //   toSum,
+  //   toCurrency,
+  //   changedToSum,
+  //   conditionOperator,
+  // ])
 
-  let isComplete = completed
-  if (!completed && hasComplete()) {
-    completeNotification(id)
-    isComplete = true
-  }
+  // let isComplete = completed
+  // if (!completed && hasComplete()) {
+  //   onCompleteNotification(id)
+  //   isComplete = true
+  // }
 
   const handleRemove = useCallback(() => {
-    removeNotification(id)
-  }, [id, removeNotification])
+    onClickRemoveNotification(id)
+  }, [id, onClickRemoveNotification])
 
   return (
     <ListItem>
@@ -86,9 +95,10 @@ function NotifierListItem({
         secondary={timeLabel()}
       />
       <ListItemSecondaryAction>
-        {!isComplete
-          ? <CircularProgress />
-          : <CheckIcon />
+        {/* {!isComplete */}
+        {!completed
+          ? <CircularProgress classes={{ root: 'notifier__spinner' }} />
+          : <CheckIcon classes={{ root: 'notifier__success' }} />
         }
         <IconButton onClick={handleRemove} edge="end" aria-label="delete">
           <DeleteIcon />

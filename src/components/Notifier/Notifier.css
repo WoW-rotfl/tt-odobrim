@@ -1,0 +1,27 @@
+.notifier__form {
+  margin: 40px 0 20px;
+}
+
+.notifier__spinner {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.notifier__success,
+.notifier__spinner {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 37px;
+  bottom: 0;
+}
+
+.notifier__title {
+  margin-bottom: 10px !important;
+}
+
+
+.notifier__btn {
+  display: block !important;
+  margin: 15px auto 0 !important;
+}

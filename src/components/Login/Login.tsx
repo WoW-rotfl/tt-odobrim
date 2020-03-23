@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import Button from '@material-ui/core/Button'
 import { useAuth } from '../../contexts/AuthContext'
 import './Login.css'
 
@@ -13,10 +14,12 @@ function Login() {
     logout()
   }, [logout])
 
-  return !isAuth ? (
-    <button className="login" type="button" onClick={handleLogin}>Log in</button>
-  ) : (
-    <button className="login" type="button" onClick={handleLogout}>Log out</button>
+  return (
+    <Button
+      onClick={isAuth ? handleLogout : handleLogin}
+    >
+      {isAuth ? 'Log out' : 'Log in'}
+    </Button>
   )
 }
 

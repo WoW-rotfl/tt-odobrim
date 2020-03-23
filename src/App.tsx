@@ -1,35 +1,32 @@
 import React from 'react'
+import Button from '@material-ui/core/Button'
 import logo from './logo.svg'
 import Converter from './components/Converter'
 import { ExchangeProvider } from './contexts/ExchangeContext'
 import Login from './components/Login'
-import { AuthProvider } from './contexts/AuthContext'
-import store from './store'
+import { useAuth } from './contexts/AuthContext'
 import './App.css'
+import Notifier from './components/Notifier'
 
 function App() {
-  const [isShowConverter, setShowConverter] = React.useState(true)
+  const { isAuth } = useAuth()
   return (
-    <AuthProvider store={store}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <span>tt-odobrim</span>
-          <Login />
-        </header>
-        <div className="content">
-          <button onClick={ () => setShowConverter(isShow => !isShow) }>click</button>
-          {isShowConverter ? (
-            <ExchangeProvider>
-              <Converter />
-            </ExchangeProvider>
-          ) : (
-            <span>Nope</span>
-          )}
-          
-        </div>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <span>tt-odobrim</span>
+      </header>
+      <div className="content">
+        <Login />
+          <ExchangeProvider>
+            <Converter
+              afterConverter={(getConverterData) => (
+                isAuth && (<Notifier getConvertionData={getConverterData} />)
+              )}
+            />
+          </ExchangeProvider>
       </div>
-    </AuthProvider>
+    </div>
   );
 }
 

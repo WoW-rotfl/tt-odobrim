@@ -40,7 +40,7 @@ const NotifierForm = ({
       variant="outlined"
       label="Current conversion"
       inputProps={{
-        readOnly: true,
+        disabled:true,
         'data-testid':'notifier-current-conversion'
       }}
       value={currentConversion}
@@ -50,10 +50,10 @@ const NotifierForm = ({
       variant="outlined"
       label="Notify result"
       inputProps={{
-        readOnly: true,
+        disabled:true,
         'data-testid': 'notifier-notify-sum'
       }}
-      value={calcNotifySum(changedAmount, currentConversion, conditionOperator)}
+      value={changedAmount ? calcNotifySum(changedAmount, currentConversion, conditionOperator) : ''}
     />
     <Select
       native
@@ -63,19 +63,19 @@ const NotifierForm = ({
       inputProps={{ 'data-testid': 'notifier-condition-operator' }}
       
     >
-      <option value="gt">{"<"}</option>
-      <option value="lt">{">"}</option>
+      <option value="gt">{">"}</option>
+      <option value="lt">{"<"}</option>
     </Select>
     <TextField
       variant="outlined"
       label="Current conversion"
       inputProps={{
-        readOnly: true,
+        disabled:true,
         'data-testid': 'notifier-current-coversion-compare'
       }}
       value={currentConversion}
     />
-    <Button onClick={onClickNotifyBtn} disabled={!changedAmount} variant="contained" color="primary">Notify</Button>
+    <Button onClick={onClickNotifyBtn} disabled={!changedAmount || !currentConversion} variant="contained" color="primary">Notify</Button>
   </div>
 )
 

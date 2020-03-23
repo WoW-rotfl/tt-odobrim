@@ -34,9 +34,9 @@ function NotifierListItem({
     const toValue = `${toSum}(${toCurrency})`
 
     const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
-    const calcFormula = `(${changedToSum}(changed to)${exprOperator(conditionOperator)}${toSum} = ${notifySum})`
-
-    return `${fromValue} -> ${toValue} => ${calcFormula} ${conditionOperator} ${fromSum}`
+    const calcFormula = `${changedToSum}(changed to)${exprOperator(conditionOperator)}${toSum} = (${notifySum}`
+    const cndnOperatotStr = conditionOperator === 'gt' ? '>' : '<'
+    return `${fromValue} -> ${toValue} => ${calcFormula} ${cndnOperatotStr} ${toSum})`
   }, [
     fromSum,
     fromCurrency,
@@ -86,7 +86,7 @@ function NotifierListItem({
         secondary={timeLabel()}
       />
       <ListItemSecondaryAction>
-        {isComplete
+        {!isComplete
           ? <CircularProgress />
           : <CheckIcon />
         }

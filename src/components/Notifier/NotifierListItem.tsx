@@ -7,7 +7,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import CheckIcon from '@material-ui/icons/Check'
 
-import useNotifier, { Notification } from './useNotifier'
+import useNotifier from './useNotifier'
+import { Notification } from '../../api/storeapi'
 import { calcNotifySum, exprOperator } from './utils'
 import { useExchange } from '../../contexts/ExchangeContext'
 

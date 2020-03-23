@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Select from '@material-ui/core/Select'
-import { ConditionOperator } from './useNotifier'
+import { ConditionOperator } from '../../api/storeapi'
 import { calcNotifySum, exprOperator } from './utils'
 
 type Props = {

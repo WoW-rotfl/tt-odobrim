@@ -1,22 +1,7 @@
 import { useReducer, useCallback } from 'react'
-import uniqueId from 'unique-string'
 import { removeItemById } from '../../utils'
+import storeapi, { Notification, NewNotification, ConditionOperator } from '../../api/storeapi'
 
-export type ConditionOperator = 'gt' | 'lt'
-export type Notification = {
-  id: string,
-  changedToSum: string;
-  conditionOperator: ConditionOperator;
-  completed: boolean,
-  fromCurrency: string;
-  fromSum: string;
-  toCurrency: string;
-  toSum: string;
-  startTime: string;
-  endTime: string;
-}
-
-type NewNotification = Omit<Notification, 'id' | 'startTime' | 'endTime' | 'completed'>
 
 type Action = 
   { type: 'CHANGE_CHANGED_TO_SUM', payload: string }
@@ -39,23 +24,6 @@ const initialState: State = {
   notifications: {},
 }
 
-function getTime(): string {
-  const date = new Date()
-  const currentDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-  const time = `${date.getHours()}:${date.getMinutes()}}`
-  return `${time} ${currentDate}`
-}
-
-function newNotification(notification: NewNotification): Notification {
-
-  return {
-    ...notification,
-    id: uniqueId(),
-    completed: false,
-    startTime: getTime(),
-    endTime: ''
-  }
-}
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -70,7 +38,7 @@ function reducer(state: State, action: Action): State {
         conditionOperator: action.payload
       }
     case 'ADD_NOTIFICATION': {
-      const notification = newNotification(action.payload)
+      const notification = storeapi.createNotification(action.payload)
       return {
         ...state,
         notifications: {
@@ -80,12 +48,7 @@ function reducer(state: State, action: Action): State {
       }
     }
     case 'COMPLETE_NOTIFICATION': {
-      const notification = {
-        ...state.notifications[action.id],
-        completed: true,
-        endTime: getTime(),
-      }
-      
+      const notification = storeapi.completeNotification(action.id)
       return {
         ...state,
         notifications: {
@@ -95,7 +58,7 @@ function reducer(state: State, action: Action): State {
       }
     }
     case 'REMOVE_NOTIFICATION':
-      // state.notifications.splice(action.id, 1)
+      storeapi.removeNotification(action.id)
       return {
         ...state,
         notifications: removeItemById(action.id, state.notifications)

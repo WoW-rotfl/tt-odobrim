@@ -3,7 +3,7 @@ import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 
 import NotifierListItem from './NotifierListItem'
-import { Notification } from './useNotifier'
+import { Notification } from '../../api/storeapi'
 
 type Props = {
   notifications: Notification[]

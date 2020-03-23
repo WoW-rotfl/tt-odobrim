@@ -8,7 +8,7 @@ export default <T extends { id: string }>(id: string, items: Items<T>): Items<T>
     .reduce(
       (allItems, item) => ({
         ...allItems,
-        [item!.id]: item
+        [item.id]: item
       }),
       {}
     ) 

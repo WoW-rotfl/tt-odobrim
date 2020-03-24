@@ -43,3 +43,15 @@ test('should show notify me form after login', async () => {
   expect(await findByText(/Notify me if/)).toBeInTheDocument()
   await wait()
 })
+
+test('should show error notification', async () => {
+  const mockedRapidapi = rapidapi as jest.Mock
+  mockedRapidapi.mockRejectedValue('Test error: should show error notification')
+
+  const { findByText } = render(
+    <AuthProvider store={store}>
+      <App />
+    </AuthProvider>
+  )
+  expect(await findByText(/Rapid API currency load error/)).toBeInTheDocument()
+})

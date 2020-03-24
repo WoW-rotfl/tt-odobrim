@@ -1,11 +1,15 @@
 import React from 'react'
 import logo from './logo.svg'
-import Converter from './components/Converter'
-import { ExchangeProvider } from './contexts/ExchangeContext'
-import Login from './components/Login'
+
 import { useAuth } from './contexts/AuthContext'
-import './App.css'
+import { ExchangeProvider, ExchangeConsumer } from './contexts/ExchangeContext'
+
+import Converter from './components/Converter'
+import Login from './components/Login'
 import Notifier from './components/Notifier'
+
+import './App.css'
+import ErrorModal from './ErrorModal'
 
 function App() {
   const { isAuth } = useAuth()
@@ -18,11 +22,22 @@ function App() {
       <div className="content">
         <Login />
           <ExchangeProvider>
-            <Converter
-              afterConverter={(getConverterData) => (
-                isAuth && (<Notifier getConvertionData={getConverterData} />)
-              )}
-            />
+            <ExchangeConsumer>
+              {(context) => {
+                if (!context) {
+                  throw new Error(
+                    'ExchangeConsumer must be used within a ExchangeProvider'
+                  )
+                }
+                return !context.error ? (    
+                  <Converter
+                    afterConverter={(getConverterData) => (
+                      isAuth && (<Notifier getConvertionData={getConverterData} />)
+                    )}
+                  />
+                ) : <ErrorModal title="Rapid API currency load error" />
+              }}
+            </ExchangeConsumer>
           </ExchangeProvider>
       </div>
     </div>

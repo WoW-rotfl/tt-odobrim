@@ -1,10 +1,5 @@
-// @flow
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Typography from '@material-ui/core/Typography'
+import ErrorModal from './ErrorModal'
 
 type Props = {
 	children: React.ReactNode,
@@ -36,19 +31,13 @@ class ErrorBoundary extends React.Component<Props, State> {
 	renderError() {
 		const { error, errorInfo } = this.state
 		return (
-			<Dialog open>
-				<DialogTitle>System error</DialogTitle>
-				<Card>
-					<CardContent>
-						<Typography variant="subtitle1" >Oops! Error ocured plesase refresh page!</Typography>
-						<details style={{ whiteSpace: 'pre-wrap', marginTop: '10px' }}>
-							{error!.toString()}
-							<br />
-							{errorInfo!.componentStack}
-						</details>
-					</CardContent>
-				</Card>
-			</Dialog>
+			<ErrorModal>
+				<details style={{ whiteSpace: 'pre-wrap', marginTop: '10px' }}>
+					{error!.toString()}
+					<br />
+					{errorInfo!.componentStack}
+				</details>
+			</ErrorModal>
 		)
 	}
 

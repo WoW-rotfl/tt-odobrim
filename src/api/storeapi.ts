@@ -11,6 +11,7 @@ export type Notification = {
   fromCurrency: string;
   fromSum: string;
   toCurrency: string;
+  completeSum: string;
   toSum: string;
   startTime: string;
   endTime: string;
@@ -18,7 +19,7 @@ export type Notification = {
 
 export type Notifications = { [id: string]: Notification }
 
-export type NewNotification = Omit<Notification, 'id' | 'startTime' | 'endTime' | 'completed'>
+export type NewNotification = Omit<Notification, 'id' | 'startTime' | 'endTime' | 'completed' | 'completeSum'>
 
 function getNotifications(): Notifications {
   const notifications = store.get('notifications')
@@ -30,18 +31,22 @@ function setNotifications(notifications: Notifications) {
   store.set('notifications', JSON.stringify(notifications))
 }
 
+function withZero(number: number) {
+  return number < 10 ? `0${number}` : number;
+}
+
 function getTime(): string {
   const date = new Date()
-  const currentDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-  const time = `${date.getHours()}:${date.getMinutes()}}`
+  const currentDate = `${date.getDate()}.${withZero(date.getMonth() + 1)}.${date.getFullYear()}`
+  const time = `${date.getHours()}:${withZero(date.getMinutes())}:${withZero(date.getSeconds())}`
   return `${time} ${currentDate}`
 }
 
 function addNotification(notification: Notification) {
   const notifications = getNotifications()
   setNotifications({
+    [notification.id]: notification,
     ...notifications,
-    [notification.id]: notification
   })
 }
 
@@ -50,6 +55,7 @@ function createNotification(notification: NewNotification): Notification {
     ...notification,
     id: uniqueId(),
     completed: false,
+    completeSum: '', 
     startTime: getTime(),
     endTime: ''
   }
@@ -58,11 +64,12 @@ function createNotification(notification: NewNotification): Notification {
   return newNotification
 }
 
-function completeNotification(id: string) {
+function completeNotification(id: string, completeSum: string) {
   const notifications = getNotifications()
   const notification = {
     ...notifications[id],
     completed: true,
+    completeSum,
     endTime: getTime(),
   }
   setNotifications(
@@ -76,6 +83,7 @@ function removeNotification(id: string) {
 }
 
 export default {
+  getNotifications,
   createNotification,
   completeNotification,
   removeNotification

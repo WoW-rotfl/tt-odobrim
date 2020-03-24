@@ -9,7 +9,6 @@ import CheckIcon from '@material-ui/icons/Check'
 
 import { Notification } from '../../api/storeapi'
 import { calcNotifySum, exprOperator } from './utils'
-import { useExchange } from '../../contexts/ExchangeContext'
 
 type Dispatchers = {
   onClickRemoveNotification: (id: string) => void,
@@ -38,6 +37,7 @@ function NotifierListItem({
 
     const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
     const calcFormula = `${changedToSum}(changed to)${exprOperator(conditionOperator)}${toSum} = (${notifySum}`
+
     const cndnOperatotStr = conditionOperator === 'gt' ? '>' : '<'
     const completeSumStr = completed ? ` => ${completeSum}(new conversion)` : ''
 
@@ -60,30 +60,6 @@ function NotifierListItem({
       : `Start: ${startTime} -> End: ${endTime}`
   }, [startTime, endTime])
 
-  // const hasComplete = useCallback(() => {
-  //   const newConversionResult = Number(calcExchangeSum(fromSum, fromCurrency, toCurrency))
-  //   const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
-  //   console.log(newConversionResult, notifySum);
-  //   return conditionOperator === 'gt'
-  //   ? newConversionResult > notifySum
-  //   : newConversionResult < notifySum
-
-  // }, [
-  //   calcExchangeSum,
-  //   fromSum,
-  //   fromCurrency,
-  //   toSum,
-  //   toCurrency,
-  //   changedToSum,
-  //   conditionOperator,
-  // ])
-
-  // let isComplete = completed
-  // if (!completed && hasComplete()) {
-  //   onCompleteNotification(id)
-  //   isComplete = true
-  // }
-
   const handleRemove = useCallback(() => {
     onClickRemoveNotification(id)
   }, [id, onClickRemoveNotification])
@@ -95,11 +71,17 @@ function NotifierListItem({
         secondary={timeLabel()}
       />
       <ListItemSecondaryAction>
-        {/* {!isComplete */}
-        {!completed
-          ? <CircularProgress classes={{ root: 'notifier__spinner' }} />
-          : <CheckIcon classes={{ root: 'notifier__success' }} />
-        }
+        {!completed ? (
+          <CircularProgress
+            data-testid="notifier-list-item-progress"
+            classes={{ root: 'notifier__spinner' }}
+          />
+        ) : (
+          <CheckIcon
+            data-testid="notifier-list-item-success"
+            classes={{ root: 'notifier__success' }}
+          />
+        )}
         <IconButton onClick={handleRemove} edge="end" aria-label="delete">
           <DeleteIcon />
         </IconButton>

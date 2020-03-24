@@ -6,8 +6,15 @@ import { useExchange } from '../../contexts/ExchangeContext'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import './Converter.css'
 
+type GetConverterData = () => { fromSum: string, fromCurrency: string, toSum: string, toCurrency: string }
 
-const ConverterContainer = () => {
+type Props = typeof defaultProps
+
+const defaultProps = {
+  afterConverter: (getConverterData: GetConverterData) => {}
+}
+
+const ConverterContainer = ({ afterConverter }: Props) => {
   const {
     setFromCurrency,
     setFromSum,
@@ -20,6 +27,13 @@ const ConverterContainer = () => {
    } = useConverter()
 
   const { loading } = useExchange()
+
+  const getConverterData = useCallback(() => ({
+    fromSum,
+    fromCurrency,
+    toSum,
+    toCurrency
+  }), [fromSum, fromCurrency, toSum, toCurrency])
 
   const handleFromCurrencyChange: MaterialSelect = useCallback(
     (e) => {
@@ -55,7 +69,7 @@ const ConverterContainer = () => {
       <CircularProgress data-testid="converter-spinner" classes={{ root: 'converter__loader' }} />
     ) : (
       <div className="converter">
-        <Typography variant="h4">Converter behavior from <Link target="_blank" href="https://www.google.com/search?newwindow=1&sxsrf=ALeKk01lf6r_zFK6BOSuhNJVgYC6zPZCkg%3A1584382524619&ei=PMJvXp6xJdGFrwTJyLboAg&q=%D1%80%D1%83%D0%B1%D0%BB%D0%B8+%D0%B2+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D1%8B&oq=%D1%80%D1%83%D0%B1%D0%BB%D0%B8+%D0%B2+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D1%8B&gs_l=psy-ab.3..35i39i70i258j0l9.77961.80840..81696...0.1..0.73.956.15......0....1..gws-wiz.......0i71j35i39j0i67j0i10i1i67j0i131.TGvL12SiPIA&ved=0ahUKEwiev8XszJ_oAhXRwosKHUmkDS0Q4dUDCAs&uact=5">google converter</Link></Typography>
+        <Typography variant="h4"><Link target="_blank" href="https://www.google.com/search?newwindow=1&sxsrf=ALeKk02FAeISmBwFfwoZ7whJu6ETy71uOA%3A1584996202592&ei=ah95XsP-IoGyrgT_9oXgCw&q=rubles+to+usd&oq=rubles&gs_l=psy-ab.3.1.0j0i203l5j0i10i203j0j0i203j0.1926.3140..5132...0.2..0.93.442.6......0....1..gws-wiz.......0i71j35i39j0i131j0i67j0i131i67j0i131i10i67.KmAMvxYFozg">Google currency converter</Link> behavior implemented</Typography>
         <Typography variant="subtitle1" >Rapid API Formula: (fromSum * rates[fromCurrency]) / rates[toCurrency]</Typography>
         <Converter
           fromSum={fromSum}
@@ -67,9 +81,12 @@ const ConverterContainer = () => {
           onChangeToCurrency={handleToCurrencyChange}
           onChangeToSum={handleToSumChange}
         />
+        {afterConverter(getConverterData)}
       </div>
     )
   )
 }
+
+ConverterContainer.defaultProps = defaultProps
 
 export default ConverterContainer

@@ -82,7 +82,11 @@ function ExchangeProvider({ children }: Props) {
   }, [rates])
 
 
-  const calcExchangeSum: CalcExchangeSum = useCallback((fromSum, fromCncy, toCncy) => {
+  const calcExchangeSum: CalcExchangeSum = useCallback((
+    fromSum,
+    fromCncy,
+    toCncy
+  ) => {
     const result = Number(fromSum) * getRate(fromCncy) / getRate(toCncy)
     if (result === 0) return ''
 

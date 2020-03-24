@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default () => 
+export default (): Promise<{ [currency: string]: number }> => 
 	axios.get('https://currency-value.p.rapidapi.com/global/currency_rates', {
 		'headers': {
 			'x-rapidapi-host': 'currency-value.p.rapidapi.com',

@@ -24,7 +24,7 @@ function hasComplete({
 
   const newConversionResult = Number(calcExchangeSum(fromSum, fromCurrency, toCurrency))
   const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)
-
+  
   return [
     conditionOperator === 'gt'
       ? newConversionResult > notifySum

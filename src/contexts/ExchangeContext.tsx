@@ -10,7 +10,11 @@ import rapidapi from '../api/rapidapi'
 export type CalcExchangeSum = (fromSum: string, fromCncy: string, toCncy: string) => string
 type ExchangeRates = { [currency: string]: number }
 type Props = { children: React.ReactNode }
-type Context = { calcExchangeSum: CalcExchangeSum, loading: boolean } | undefined
+type Context = {
+  calcExchangeSum: CalcExchangeSum,
+  loading: boolean,
+  error: boolean
+} | undefined
 
 
 const initialState = {}
@@ -39,18 +43,27 @@ function randomRates() {
 function ExchangeProvider({ children }: Props) {
   const [rates, setRates] = useState<ExchangeRates>(initialState)
   const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<boolean>(false)
 
   useEffect(() => {
     let didCancel = false
+
     async function fetchRates() {
-      const newRates = await rapidapi()
-      if (!didCancel) {
-        setRates(newRates)
-        setLoading(false)
-      }
+
+      try {
+        const newRates = await rapidapi()
+        if (!didCancel) {
+          setRates(newRates)
+          setLoading(false)
+        }
+      } catch(error) {
+        console.log(error)
+        setError(true)
+      }      
     }
 
     fetchRates()
+    
     return () => {
       didCancel = true
     }
@@ -94,7 +107,7 @@ function ExchangeProvider({ children }: Props) {
   }, [getRate])
 
   return (
-    <Provider value={{ calcExchangeSum, loading }}>
+    <Provider value={{ calcExchangeSum, loading, error }}>
       {children}
     </Provider>
   )

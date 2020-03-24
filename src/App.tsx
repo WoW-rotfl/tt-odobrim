@@ -18,6 +18,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <span>tt-odobrim</span>
+        <a className="App-github" href="https://github.com/WoW-rotfl/tt-odobrim">GitHub</a>
       </header>
       <div className="content">
         <Login />

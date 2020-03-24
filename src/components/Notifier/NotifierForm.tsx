@@ -43,6 +43,12 @@ function NotifierForm({
       >
         Notify me if convertion result changed to:
       </Typography>
+      <Typography
+        classes={{ root: 'notifier__subtitle' }}
+        variant="subtitle1"
+      >
+        To test the notification pending and success state, fill the form and wait: converter from: 100000(RUB), to currency: USD, change amount: 15
+      </Typography>
       <TextField
         type="number"
         variant="outlined"

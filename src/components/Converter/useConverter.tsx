@@ -1,7 +1,8 @@
-import { useReducer, useCallback } from 'react'
+// eslint-disable-next-line
+import { useReducer, useCallback, useEffect } from 'react' 
+
 import { useExchange, CalcExchangeSum } from '../../contexts/ExchangeContext'
 
-// import type { CalcExchangeSum } from '../../ExchangeContext';
 
 type State = typeof initialState
 type Action = 
@@ -9,7 +10,7 @@ type Action =
   | { type: 'CHANGE_FROM_SUM', payload: string }
   | { type: 'CHANGE_TO_CURRENCY', payload: string }
   | { type: 'CHANGE_TO_SUM', payload: string }
-  // for usage uncomment useFffect :76-79
+  // for usage uncomment useFffect :77-79
   | { type: 'CONVERTER_REAL_TIME_REFRESH_TO_SUM' } 
 
 const initialState = {

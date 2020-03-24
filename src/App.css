@@ -11,6 +11,16 @@
   margin-top: 80px;
 }
 
+.App-github {	
+  background: transparent;	
+  border: 0;	
+  color: white;	
+  cursor: pointer;	
+  font-size: 18px;	
+  margin-left: 20px;	
+  margin-top: 5px;	
+} 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

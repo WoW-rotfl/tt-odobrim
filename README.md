@@ -1,3 +1,10 @@
+# Odobrim test task
+
+1. Implement google converter behavior
+2. Create multi notification alert when conversion amount changed to predefined amount
+
+[Live demo](http://showcase.wowlab.xyz/odobrim/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

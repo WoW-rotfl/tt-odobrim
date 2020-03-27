@@ -13,4 +13,4 @@ const controller: IStore<string, string | null> = {
 }
 
 
-export default controller;
+export default controller

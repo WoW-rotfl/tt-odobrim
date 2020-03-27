@@ -24,20 +24,15 @@ function App() {
         <Login />
           <ExchangeProvider>
             <ExchangeConsumer>
-              {(context) => {
-                if (!context) {
-                  throw new Error(
-                    'ExchangeConsumer must be used within a ExchangeProvider'
-                  )
-                }
-                return !context.error ? (    
+              {(context) => (
+                !context!.error ? (
                   <Converter
                     afterConverter={(getConverterData) => (
                       isAuth && (<Notifier getConvertionData={getConverterData} />)
                     )}
                   />
                 ) : <ErrorModal title="Rapid API currency load error" />
-              }}
+              )}
             </ExchangeConsumer>
           </ExchangeProvider>
       </div>

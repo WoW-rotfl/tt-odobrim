@@ -72,7 +72,7 @@ function getReducer(calcExchangeSum: CalcExchangeSum) {
 function useConverter() {
   const { calcExchangeSum } = useExchange()
   const [state, dispatch] = useReducer(getReducer(calcExchangeSum), initialState)
-  const { fromCurrency, fromSum, toCurrency, toSum } = state;
+  const { fromCurrency, fromSum, toCurrency, toSum } = state
 
   // useEffect(() => {
   //   dispatch({ type: 'CONVERTER_REAL_TIME_REFRESH_TO_SUM' });

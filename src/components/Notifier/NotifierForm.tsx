@@ -64,7 +64,7 @@ function NotifierForm({
         variant="outlined"
         label="Current conversion"
         inputProps={{
-          disabled:true,
+          disabled: true,
           'data-testid':'notifier-current-conversion'
         }}
         value={currentConversion}
@@ -74,7 +74,7 @@ function NotifierForm({
         variant="outlined"
         label="Notify result"
         inputProps={{
-          disabled:true,
+          disabled: true,
           'data-testid': 'notifier-notify-sum'
         }}
         value={changedAmount ? calcNotifySum(changedAmount, currentConversion, conditionOperator) : ''}
@@ -95,7 +95,7 @@ function NotifierForm({
         variant="outlined"
         label="Current conversion"
         inputProps={{
-          disabled:true,
+          disabled: true,
           'data-testid': 'notifier-current-coversion-compare'
         }}
         value={currentConversion}

@@ -13,14 +13,17 @@ type Props = {
   onCompleteNotification: (id: string, completeSum: string) => void,
 }
 
-function hasComplete({
-  fromSum,
-  fromCurrency,
-  toSum,
-  toCurrency,
-  changedToSum,
-  conditionOperator,
-}: Notification, calcExchangeSum: CalcExchangeSum) {
+function hasComplete(
+  {
+    fromSum,
+    fromCurrency,
+    toSum,
+    toCurrency,
+    changedToSum,
+    conditionOperator,
+  }: Notification,
+    calcExchangeSum: CalcExchangeSum
+) {
 
   const newConversionResult = Number(calcExchangeSum(fromSum, fromCurrency, toCurrency))
   const notifySum = calcNotifySum(changedToSum, toSum, conditionOperator)

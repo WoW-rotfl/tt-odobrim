@@ -30,7 +30,6 @@ function NotifierListItem({
   onClickRemoveNotification,
 }: Notification & Dispatchers) {
 
-
   const formulaLabel = useCallback(() => {
     const fromValue = `${fromSum}(${fromCurrency})`
     const toValue = `${toSum}(${toCurrency})`

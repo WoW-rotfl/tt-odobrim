@@ -44,7 +44,7 @@ test('should show notify me form after login', async () => {
   await wait()
 })
 
-test('should show error notification', async () => {
+test('should show fetch error notification', async () => {
   const mockedRapidapi = rapidapi as jest.Mock
   mockedRapidapi.mockRejectedValue('Test error: should show error notification')
 
